@@ -14,7 +14,7 @@ opt.data = "half-circle"
 # choose a model from ["CIDA", "PCIDA", "ADDA", "SO", "DANN", "CDANN", "MDD", "CUA"]
 opt.model = "CIDA"
 # choose run on which device ["cuda", "cpu"]
-opt.device = "cuda"
+opt.device = "cpu"
 
 # set random seed
 opt.seed = 2333
@@ -27,7 +27,7 @@ print("pytorch version:", torch.__version__)
 #####################
 
 # training configs
-opt.num_epoch = 800
+opt.num_epoch = 100 # Originally 800
 opt.batch_size = 10
 opt.lr = 1e-4
 opt.lr_T = 1e-4
@@ -198,6 +198,8 @@ else:
 
 
 
+
+
 #####################
 # CELL 6
 #####################
@@ -209,4 +211,4 @@ print(info['data'].shape)
 info['data'] = info['data'] * data_std + data_mean
 plot_data_and_label(ax, info['data'], info['label'])
 plt.title(f"Model's prediction: {opt.model}", fontsize=20)
-plt.show()
+plt.savefig("prediction.png")
