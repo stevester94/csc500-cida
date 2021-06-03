@@ -6,3 +6,7 @@ RUN pip3 install numpy
 RUN pip3 install torch
 RUN pip3 install torch  --upgrade
 RUN pip3 install numpy  --upgrade
+RUN pip3 install matplotlib
+RUN pip3 install sklearn
+
+WORKDIR /csc500-super-repo/csc500-cida
