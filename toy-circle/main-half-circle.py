@@ -126,6 +126,26 @@ dataloader = DataLoader(
     shuffle=True,
     batch_size=opt.batch_size
 )
+"""
+SM: All other comments are original, so they can (most likely) be trusted.
+
+Each ds in datasets is one domain. 
+The SeqToyDataset basically concatenates all of our domains. When you get dataset[i] it returns one item from each dataset
+By default we have 30 domains, so dataset[0] gives us a list of 30 items.
+Each of these 30 items is as below:
+    X:np.array(shape(2), float),label:(int),index:(int)
+
+There are 100 items in the dataset
+
+?: How does it know which domain the samples are from
+
+
+"""
+
+# import sys
+# sys.exit(1)
+
+# print("SM: DONE")
 
 
 #####################
@@ -154,8 +174,27 @@ if opt.normalize_domain:
     
 # train the model
 if not opt.continual_da:
+    """SM
+    Yes, we drop into this block
+    So far we have:
+    - instantiated our CIDA model
+    - set it to CPU (that's the .to() call)
+    - skipped the normalize_domain portion
+    
+    """
     # one-step adaptation
     for epoch in range(opt.num_epoch):
+        """SM
+        Inside .learn() we have 
+        :param
+            input: x_seq, y_seq
+            x_seq: Number of domain x Batch size x Data dim
+            y_seq: Number of domain x Batch size x Label dim
+
+        (They apparently forgot to document the index, but it is kinda used)
+        self.T, self.B = self.x_seq.shape[:2]
+
+        """
         model.learn(epoch, dataloader)
         if (epoch + 1) % 100 == 0 or (epoch + 1) == opt.num_epoch:
             model.save()
