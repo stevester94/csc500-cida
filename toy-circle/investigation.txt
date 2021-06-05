@@ -1,0 +1,35 @@
+at the end of set_inputs() [first batch]:
+    self.x_seq
+        torch.Size([30, 10, 2])
+
+    self.y_seq
+        torch.Size([30, 10])
+
+    self.idx_seq
+        torch.Size([30, 10])
+
+    self.T # Number of domains? I think they may have fucked up in a big way here. They should not train on all domains
+        30
+
+    self.B # Number in batch
+        10
+    self.t_seq # looks like normalized domain indices, though the shape is just so weird
+        torch.Size([30, 10, 1])
+
+    self.z_seq # these are domain values, and by god there is 0-29
+        torch.Size([30, 10])
+
+    self.domain_weight 
+        # The first _12_ are 1s, the rest are zeroes
+        #
+        # Is used in the loss functions, for both G and D. It looks like it's neutralizing the t_seq and d_seq for these domains
+        # Though the fact we are inadvertently using the first 12 domains is kinda lulzy
+        torch.Size([30, 10, 1])
+
+    self.pseudo_weight # It's all zeroes
+        (30,)
+
+    self.p_seq # It's also all zeroes
+        torch.Size([30, 10])
+
+

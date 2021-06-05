@@ -354,6 +354,8 @@ class CIDA(BaseModel):
             pseudo_acc.append(to_np(self.p_seq[i].eq(self.y_seq[i])).mean())
         # print('pseudo_acc', pseudo_acc)
 
+        pass
+
     def backward_G(self):
         self.d_seq = self.netD(self.e_seq)
         self.loss_E_gan = - F.l1_loss(flat(self.d_seq * self.domain_weight), flat(self.t_seq * self.domain_weight))
