@@ -142,8 +142,40 @@ There are 100 items in the dataset
 
 """
 
-# import sys
-# sys.exit(1)
+# def to_tensor(x, device="cuda"):
+#     if isinstance(x, np.ndarray):
+#         x = torch.from_numpy(x).to(device)
+#     else:
+#         x = x.to(device)
+#     return x
+# device = opt.device
+
+# num=30
+# num_domain = num
+# # t is domain index: normalized to [0,1]
+# t = np.linspace(0, 1, num).astype(np.float32)
+# t_var = to_tensor(t, device)
+# # z is domain class (0,1,2,...) will be used by some adaptation methods
+# z = np.arange(num).astype(np.int64)
+# z_var = to_tensor(z, device)
+
+# # Each data is a batch
+# for data in dataloader:
+#     x_seq, y_seq, idx_seq = [d[0][None, :, :] for d in data], [d[1][None, :] for d in data], [d[2][None, :] for d in data]
+#     x_seq = torch.cat(x_seq, 0).to(device)
+#     y_seq = torch.cat(y_seq, 0).to(device)
+#     idx_seq = torch.cat(idx_seq, 0).to(device)
+
+#     input = (x_seq, y_seq) 
+
+#     # call to set_input()
+#     x_seq, y_seq = input
+#     T, B = x_seq.shape[:2]
+#     t_seq = to_tensor(np.zeros((T, B, 1), dtype=np.float32), device) + t_var.reshape(T, 1, 1)
+#     z_seq = to_tensor(np.zeros((T, B), dtype=np.int64), device) + z_var.reshape(T, 1)
+
+#     import sys
+#     sys.exit(1)
 
 # print("SM: DONE")
 

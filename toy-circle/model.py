@@ -81,6 +81,8 @@ class BaseModel(nn.Module):
         self.z_var = to_tensor(self.z, self.device)
 
     def set_input(self, input):
+        # We never get here
+        raise("Here")
         """
         :param
             input: x_seq, y_seq
@@ -305,13 +307,27 @@ class CIDA(BaseModel):
             y_seq: Number of domain x Batch size x Label dim
         """
         self.x_seq, self.y_seq, self.idx_seq = input[0], input[1], input[2]
+
+        """SM
+        T: Number of domains
+        B: Number of batches
+        """
         self.T, self.B = self.x_seq.shape[:2]
+
+        """SM
+        t_seq looks like normalized domain indexes (30, 10, 1) (those shapes are strange)
+        z_seq is (30,10) and is just domain indexes
+        """
         self.t_seq = to_tensor(np.zeros((self.T, self.B, 1), dtype=np.float32), self.device) + self.t_var.reshape(self.T, 1, 1)
         self.z_seq = to_tensor(np.zeros((self.T, self.B), dtype=np.int64), self.device) + self.z_var.reshape(self.T, 1)
 
         self.domain_weight = self.t_seq.clone()
         self.pseudo_weight = np.zeros((self.T))
 
+        """SM
+        domain_weight: 30,10,1
+        pseudo_weight: 30 (I don't get that)
+        """
         self.domain_weight[:, :, :] = 0
         self.pseudo_weight[:] = 0
         self.domain_weight[:self.num_source + self.num_domain_step * (1 + self.stage), :, :] = 1
@@ -320,6 +336,9 @@ class CIDA(BaseModel):
 #         self.pseudo_weight[self.num_source: self.num_source + self.num_domain_step * self.stage] = 1
         self.pseudo_weight[self.num_source: self.num_source + self.num_domain_step * self.stage] = np.linspace(0.001, 0.001, self.num_domain_step * self.stage)
 
+
+        """SM
+        """
         self.p_seq = torch.zeros_like(self.y_seq)
 
         # print('pseudo weight', self.pseudo_weight, 'stage', self.stage)
@@ -415,7 +434,19 @@ class CIDA(BaseModel):
         acc_curve = []
 
         for data in dataloader:
+            """SM
+            For each domain:
+                X: start with (10,2). Add a dimension. End with (1,10,2)
+                Y: start with (10), End with (1,10)
+                idx, start with (10), end with (1,10)    
+
+                we iterate over all of these so we get a list of len 30 for each
+            """
             x_seq, y_seq, idx_seq = [d[0][None, :, :] for d in data], [d[1][None, :] for d in data], [d[2][None, :] for d in data]
+
+            """SM
+            Concatenate them, ending up with shape (30, 10, 2), (30,10), (30,10) respectively
+            """
             x_seq = torch.cat(x_seq, 0).to(self.device)
             y_seq = torch.cat(y_seq, 0).to(self.device)
             idx_seq = torch.cat(idx_seq, 0).to(self.device)

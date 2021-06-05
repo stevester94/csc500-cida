@@ -1,0 +1,55 @@
+@startuml fug
+
+
+"CIDA::learn()" -> "???.train()" : self.train()
+"???.train()" -> "???.train()" : who knows?!
+"???.train()" ---> "CIDA::learn()"
+
+"CIDA::learn()" -> "CIDA::learn()" : Concatenate the list-ed data into batch tensor
+
+"CIDA::learn()" -> "CIDA::set_input()" : self.input()
+"CIDA::set_input()" -> "CIDA::set_input()" : "Forms the domain tensors"
+note left: Need the final form of the fuckers involved in set_input
+"CIDA::set_input()" --> "CIDA::learn()"
+
+"CIDA::learn()" -> "BaseModel::optimize_parameters()" : self.optimize_parameters()
+
+' Change these to new actors as required
+"BaseModel::optimize_parameters()" -> "BaseModel::forward()" : self.forward()
+"BaseModel::forward()" --> "BaseModel::optimize_parameters()"
+
+"BaseModel::optimize_parameters()" -> "BaseModel::set_requires_grad()" : self.set_requires_grad(self.netD, True)
+"BaseModel::set_requires_grad()" --> "BaseModel::optimize_parameters()"
+
+"BaseModel::optimize_parameters()" -> "whatever_optimizer_D_is::zero_grad()" : self.optimizer_D.zero_grad()
+"whatever_optimizer_D_is::zero_grad()" --> "BaseModel::optimize_parameters()"
+
+"BaseModel::optimize_parameters()" -> "BaseModel::backward_D()" : self.backward_D()
+"BaseModel::backward_D()" --> "BaseModel::optimize_parameters()"
+
+"BaseModel::optimize_parameters()" -> "whatever_optimizer_D_is::step()" : self.optimizer_D.step()
+"whatever_optimizer_D_is::step()" --> "BaseModel::optimize_parameters()"
+
+
+"BaseModel::optimize_parameters()" -> "BaseModel::set_requires_grad()" : self.set_requires_grad(self.netD, False)
+"BaseModel::set_requires_grad()" --> "BaseModel::optimize_parameters()"
+
+"BaseModel::optimize_parameters()" -> "whatever_optimizer_G_is::zero_grad()" : self.optimizer_G.zero_grad()
+"whatever_optimizer_G_is::zero_grad()" --> "BaseModel::optimize_parameters()"
+
+"BaseModel::optimize_parameters()" -> "BaseModel::backward_G()" : self.backward_G()
+"BaseModel::backward_G()" --> "BaseModel::optimize_parameters()"
+
+"BaseModel::optimize_parameters()" -> "whatever_optimizer_G_is::step()" : self.optimizer_G.step()
+"whatever_optimizer_G_is::step()" --> "BaseModel::optimize_parameters()"
+
+
+"BaseModel::optimize_parameters()" -> "BaseModel::optimize_parameters()" :
+"BaseModel::optimize_parameters()" -> "BaseModel::optimize_parameters()" :
+"BaseModel::optimize_parameters()" -> "BaseModel::optimize_parameters()" :
+"BaseModel::optimize_parameters()" -> "BaseModel::optimize_parameters()" :
+"BaseModel::optimize_parameters()" -> "BaseModel::optimize_parameters()" :
+"BaseModel::optimize_parameters()" -> "BaseModel::optimize_parameters()" :
+"BaseModel::optimize_parameters()" -> "BaseModel::optimize_parameters()" :
+
+@enduml
