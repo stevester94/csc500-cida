@@ -310,7 +310,7 @@ class CIDA(BaseModel):
 
         """SM
         T: Number of domains
-        B: Number of batches
+        B: Size of batches
         """
         self.T, self.B = self.x_seq.shape[:2]
 
