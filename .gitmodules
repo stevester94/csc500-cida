@@ -1,0 +1,3 @@
+[submodule "Transfer-Learning-Library"]
+	path = Transfer-Learning-Library
+	url = https://github.com/stevester94/Transfer-Learning-Library.git
