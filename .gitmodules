@@ -1,3 +1,6 @@
 [submodule "Transfer-Learning-Library"]
 	path = Transfer-Learning-Library
 	url = https://github.com/stevester94/Transfer-Learning-Library.git
+[submodule "DANN_py3"]
+	path = DANN_py3
+	url = https://github.com/stevester94/DANN_py3.git
