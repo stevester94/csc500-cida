@@ -12,7 +12,6 @@ import numpy as np
 # from steves_utils.ORACLE.windowed_shuffled_dataset_accessor import Windowed_Shuffled_Dataset_Factory
 # from steves_utils.ORACLE.utils import ALL_SERIAL_NUMBERS
 
-torch.set_default_dtype(torch.float64)
 
 # This is still wrong though
 # def tf_categorical_crossentropy(y, y_hat, from_logits=False, axis=-1):
@@ -40,6 +39,8 @@ if __name__ == "__main__":
     NUM_RAND_TESTS = 10000
     MAX_NUM_CLASSES = 30
     MAX_BATCH_SIZE = 2000
+
+    torch.set_default_dtype(torch.float64)
 
     rng = np.random.default_rng(1337)
 
@@ -122,23 +123,23 @@ if __name__ == "__main__":
 #     ).numpy()
 # )
 
-sys.exit(0)
+# sys.exit(0)
 
-criterion = nn.CrossEntropyLoss()
-print(
-    "nn.CrossEntropyLoss:",
-    criterion(
-        torch.tensor([[0.0, 1.0, 0.0]]),
-        torch.tensor([2])
-    ).numpy()
-)
+# criterion = nn.CrossEntropyLoss()
+# print(
+#     "nn.CrossEntropyLoss:",
+#     criterion(
+#         torch.tensor([[0.0, 1.0, 0.0]]),
+#         torch.tensor([2])
+#     ).numpy()
+# )
 
 
-criterion = nn.NLLLoss()
-print(
-    "nn.NLLLoss:",
-    criterion(
-        torch.tensor([[0.0, 1.0, 0.0]]),
-        torch.tensor([2])
-    ).numpy()
-)
+# criterion = nn.NLLLoss()
+# print(
+#     "nn.NLLLoss:",
+#     criterion(
+#         torch.tensor([[0.0, 1.0, 0.0]]),
+#         torch.tensor([2])
+#     ).numpy()
+# )
