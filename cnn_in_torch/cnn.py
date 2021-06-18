@@ -130,7 +130,7 @@ class CNNModel(nn.Module):
         self.feature.add_module('c_relu2', nn.ReLU(False))
         self.feature.add_module('c_drop1', nn.Dropout())
         self.feature.add_module('c_fc3', nn.Linear(80, 16))
-        self.feature.add_module('c_softmax', nn.Softmax(dim=1))
+        # self.feature.add_module('c_softmax', nn.Softmax(dim=1))
 
     def forward(self, input_data):
         # print("input_data:", input_data.shape)
@@ -161,20 +161,38 @@ def apply_dataset_pipeline(datasets):
     val_ds = datasets["val_ds"]
     test_ds = datasets["test_ds"]
 
+    # train_ds = train_ds.map(
+    #     lambda x: (x["IQ"],tf.one_hot(x["serial_number_id"], RANGE)),
+    #     num_parallel_calls=tf.data.AUTOTUNE,
+    #     deterministic=True
+    # )
+
+    # val_ds = val_ds.map(
+    #     lambda x: (x["IQ"],tf.one_hot(x["serial_number_id"], RANGE)),
+    #     num_parallel_calls=tf.data.AUTOTUNE,
+    #     deterministic=True
+    # )
+
+    # test_ds = test_ds.map(
+    #     lambda x: (x["IQ"],tf.one_hot(x["serial_number_id"], RANGE)),
+    #     num_parallel_calls=tf.data.AUTOTUNE,
+    #     deterministic=True
+    # )
+
     train_ds = train_ds.map(
-        lambda x: (x["IQ"],tf.one_hot(x["serial_number_id"], RANGE)),
+        lambda x: (x["IQ"], x["serial_number_id"]),
         num_parallel_calls=tf.data.AUTOTUNE,
         deterministic=True
     )
 
     val_ds = val_ds.map(
-        lambda x: (x["IQ"],tf.one_hot(x["serial_number_id"], RANGE)),
+        lambda x: (x["IQ"], x["serial_number_id"]),
         num_parallel_calls=tf.data.AUTOTUNE,
         deterministic=True
     )
 
     test_ds = test_ds.map(
-        lambda x: (x["IQ"],tf.one_hot(x["serial_number_id"], RANGE)),
+        lambda x: (x["IQ"], x["serial_number_id"]),
         num_parallel_calls=tf.data.AUTOTUNE,
         deterministic=True
     )
@@ -209,13 +227,13 @@ original_train_ds, original_val_ds, original_test_ds = get_shuffled_and_windowed
 net = CNNModel().cuda()
 
 # The input is expected to contain raw, unnormalized scores for each class.
-# criterion = nn.CrossEntropyLoss()
+criterion = nn.CrossEntropyLoss()
 # criterion = nn.NLLLoss()
-criterion = steves_categorical_crossentropy
+# criterion = steves_categorical_crossentropy
 # optimizer = optim.SGD(net.parameters(), lr=LEARNING_RATE, momentum=0.9)
 optimizer = optim.Adam(net.parameters(), lr=LEARNING_RATE)
 
-for epoch in range(2):  # loop over the dataset multiple times
+for epoch in range(10):  # loop over the dataset multiple times
 
     original_train_iter = original_train_ds.as_numpy_iterator()
 
