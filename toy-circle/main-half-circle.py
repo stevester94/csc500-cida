@@ -7,6 +7,9 @@ import matplotlib.pyplot as plt
 import torch
 import numpy as np
 import random
+
+from steves_utils.half_circle_dataset import generate_half_circle_data
+
 # set experiment configs
 opt = EasyDict()
 # choose a dataset from ["quarter-circle", "half-circle"]
@@ -110,6 +113,12 @@ from plot import plot_dataset
 
 # load raw data
 data_pkl = read_pickle(f'./data/{opt.data}.pkl')
+
+x, y, t = generate_half_circle_data()
+data_pkl["data"] = x
+data_pkl["label"] = y
+data_pkl["domain"] = t
+
 print(f"Data: {data_pkl['data'].shape}\nLabel: {data_pkl['label'].shape}")
 # visualize raw data
 plot_dataset(data_pkl)
