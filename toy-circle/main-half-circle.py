@@ -17,7 +17,7 @@ opt.data = "half-circle"
 # choose a model from ["CIDA", "PCIDA", "ADDA", "SO", "DANN", "CDANN", "MDD", "CUA"]
 opt.model = "CIDA"
 # choose run on which device ["cuda", "cpu"]
-opt.device = "cpu"
+opt.device = "cuda"
 
 # set random seed
 opt.seed = 2333
@@ -30,7 +30,7 @@ print("pytorch version:", torch.__version__)
 #####################
 
 # training configs
-opt.num_epoch = 100 # Originally 800
+opt.num_epoch = 800 # Originally 800
 opt.batch_size = 10
 opt.lr = 1e-4
 opt.lr_T = 1e-4
@@ -114,7 +114,7 @@ from plot import plot_dataset
 # load raw data
 data_pkl = read_pickle(f'./data/{opt.data}.pkl')
 
-x, y, t = generate_half_circle_data()
+x, y, t = generate_half_circle_data(opt.seed)
 data_pkl["data"] = x
 data_pkl["label"] = y
 data_pkl["domain"] = t
